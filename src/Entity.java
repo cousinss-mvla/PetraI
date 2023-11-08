@@ -4,6 +4,7 @@ import java.util.function.Function;
 
 public class Entity {
     private Global G;
+    private final String id;
     private Entity parent;
     private EFlagSet flagSet;
     private Description description;
@@ -13,21 +14,12 @@ public class Entity {
     private List<Entity> contains;
     private Function<Global, Boolean> function;
 
-    protected Entity(Entity parent, Description d, EFlagSet flags) { //TODO remove (debug)
-        this.parent = parent;
-        if(parent != null) {
-            parent.contains.add(this);
-        }
-        this.description = d;
-        this.flagSet = flags;
-        this.contains = new ArrayList<>();
-    }
-
     /**
      * For builder only
      */
-    public Entity(Global g, Entity parent, EFlagSet flagSet, Description description, Navigation navigation, int weight, int capacity, List<Entity> contains, Function<Global, Boolean> function) {
+    public Entity(Global g, String id, Entity parent, EFlagSet flagSet, Description description, Navigation navigation, int weight, int capacity, List<Entity> contains, Function<Global, Boolean> function) {
         this.G = g;
+        this.id = id;
         this.parent = parent;
         this.flagSet = flagSet;
         this.description = description;
@@ -40,15 +32,21 @@ public class Entity {
 
     public static class Builder {
 
-        public Builder(Global g) {
+        public Builder(Global g, String id) {
             this.G = g;
+            this.id = id;
         }
 
         public Entity build() {
-            return new Entity(G, parent, flagSet != null ? flagSet : new EFlagSet(), description, navigation, weight, capacity, contains, function);
+            Entity out = new Entity(G, id, parent, flagSet != null ? flagSet : new EFlagSet(), description, navigation, weight, capacity, contains == null ? new ArrayList<Entity>() : contains, function);
+            if(out.getParent() != null) {
+                out.parent.contains.add(out);
+            }
+            return out;
         }
 
         private Global G;
+        private String id;
         private Entity parent;
         private EFlagSet flagSet;
         private Description description;
@@ -120,12 +118,30 @@ public class Entity {
         return out;
     }
 
+    public List<Entity> getDescendantsWithSelf() {
+        List<Entity> out = this.getDescendants();
+        out.add(this);
+        return out;
+    }
+
+    protected Description describe() {
+        return this.description;
+    }
+
     protected boolean addChild(Entity e) {
         if(this.contains.contains(e)) {
             return false;
         }
         this.contains.add(e);
         return true;
+    }
+
+    protected Navigation getNavigation() {
+        return this.navigation;
+    }
+
+    protected String getId() {
+        return this.id;
     }
 
     /**
