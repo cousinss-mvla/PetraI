@@ -11,6 +11,6 @@ public class Hagmar {
         }
         Entity to = loc.getNavigation().move(Direction.OUT);
 
-        System.out.println("FROM\n" + loc + "\nTO\n"+ to);
+//        System.out.println("FROM\n" + loc + "\nTO\n"+ to);
     }
 }

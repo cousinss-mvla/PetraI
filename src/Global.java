@@ -18,9 +18,18 @@ public class Global {
 
     public Global() {
 
-        ROOMS = new Entity.Builder(this, "ROOMS").setDescription(new Description.Builder().setShort("ROOMS").build()).build();
-        LOCAL_GLOBALS = new Entity.Builder(this, "LOCAL_GLOBALS").setDescription(new Description.Builder().setShort("LOCAL_GLOBALS").build()).build();
-        VOID = new Entity.Builder(this, "VOID").setDescription(new Description.Builder().setShort("VOID").build()).build();
+        ROOMS = new Entity.Builder(this, "ROOMS")
+                .setDescription(new Description.Builder().setShort("ROOMS").build())
+                .setFlagSet(new EFlagSet(EFlag.NDESC, EFlag.INV))
+                .build();
+        LOCAL_GLOBALS = new Entity.Builder(this, "LOCAL_GLOBALS")
+                .setDescription(new Description.Builder().setShort("LOCAL_GLOBALS").build())
+                .setFlagSet(new EFlagSet(EFlag.NDESC, EFlag.INV))
+                .build();
+        VOID = new Entity.Builder(this, "VOID")
+                .setDescription(new Description.Builder().setShort("VOID").build())
+                .setFlagSet(new EFlagSet(EFlag.NDESC, EFlag.INV))
+                .build();
 
         WHITE_DOOR = new Entity.Builder(this, "WHITE_DOOR")
                 .setParent(LOCAL_GLOBALS)
@@ -52,10 +61,6 @@ public class Global {
                         .build())
                 .setFlagSet(new EFlagSet(EFlag.LIT, EFlag.NDIR))
                 .setNavigation(new Navigation(this)
-//                        .put(g -> {
-//                            System.out.println("Can move from " + WHITE_ROOM + " to " + BLACK_ROOM + " through " + WHITE_DOOR + "?");
-//                            return WHITE_DOOR.has(EFlag.OPEN) ? BLACK_ROOM : WHITE_ROOM;
-//                        }, Direction.IN, Direction.OUT))
                         .put(getDoorNavFunc("WHITE_DOOR", "WHITE_ROOM", "BLACK_ROOM"), Direction.OUT, Direction.IN))
                 .putLocalGlobals(List.of(WHITE_DOOR))
                 .build();
@@ -68,29 +73,12 @@ public class Global {
                         .build())
                 .setFlagSet(new EFlagSet(EFlag.LIT, EFlag.NDIR))
                 .setNavigation(new Navigation(this)
-//                        .put(g -> {
-//                            System.out.println("Can move from " + BLACK_ROOM + " to " + WHITE_ROOM + " through " + WHITE_DOOR + "?");
-//                            return WHITE_DOOR.has(EFlag.OPEN) ? WHITE_ROOM : BLACK_ROOM;
-//                        }, Direction.IN, Direction.OUT))
                         .put(getDoorNavFunc("WHITE_DOOR", "BLACK_ROOM", "WHITE_ROOM"), Direction.OUT, Direction.IN))
                 .putLocalGlobals(List.of(WHITE_DOOR))
                 .build();
 
-//        biconnectParents();
-        populateHash();
-    }
 
-    private void biconnectParents() {
-        for(Entity e : ROOMS.getDescendants()) {
-            if(e.getParent() != null) {
-                e.getParent().addChild(e);
-            }
-        }
-        for(Entity e : VOID.getDescendants()) {
-            if(e.getParent() != null) {
-                e.getParent().addChild(e);
-            }
-        }
+        populateHash();
     }
 
     private void populateHash() {
@@ -101,9 +89,9 @@ public class Global {
         for(Entity e : VOID.getDescendantsWithSelf()) {
             eHash.put(e.getId(), e);
         }
-        for(String s : eHash.keySet()) {
-            System.out.println("In hash " + s + " -> " + eHash.get(s));
-        }
+//        for(String s : eHash.keySet()) {
+//            System.out.println("In hash " + s + " -> " + eHash.get(s));
+//        }
     }
 
     private Entity e(String id) {
@@ -115,7 +103,7 @@ public class Global {
             Entity d = e(door);
             Entity f = e(from);
             Entity t = e(to);
-            System.out.println("Can move from " + f + " to " + t + " through " + d + "?");
+            System.out.println("Can move from \n" + f + "\nto\n" + t + "\nthrough\n" + d + "\n?");
             if(!d.has(EFlag.OPEN)) {
                 System.out.println("The " + d.describe().getShort() + " is closed.");
             }
