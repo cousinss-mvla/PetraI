@@ -28,25 +28,62 @@ public class Description {
     //ex: (ITEM Entity) "The blade is ornate but not fragile, and shines silver as it rests lightly against the wall."
     private String dFirst;
 
+    private List<Word> names;
     private List<Word> adjectives;
 
     //The Entity's method descriptor. See {@link EntityDescribeMethod}. Can be null if no object descriptor is provided (for Rooms, this means the object must have a dLong).
     private EntityDescribeMethod dMethod;
 
-    public Description(String dShort, String dLong, String dFirst, EntityDescribeMethod dMethod) {
+    private Description(String dShort, String dLong, String dFirst, EntityDescribeMethod dMethod, List<Word> names, List<Word> adjectives) {
         this.dShort = dShort;
         this.dLong = dLong;
         this.dFirst = dFirst;
         this.dMethod = dMethod;
-        this.adjectives = new ArrayList<Word>();
+        this.names = names;
+        this.adjectives = adjectives;
     }
 
-    public Description(String dShort) {
-        this(dShort, null, null, null);
-    }
+    public static class Builder {
+        public Builder() {}
+        public Description build() {
+            return new Description(dShort, dLong, dFirst, dMethod, names, adjectives);
+        }
+        private String dShort;
+        private String dLong;
+        private String dFirst;
+        private EntityDescribeMethod dMethod;
+        private List<Word> names;
+        private List<Word> adjectives;
 
-    public Description() {
-        this(null);
+        public Builder setShort(String dShort) {
+            this.dShort = dShort;
+            return this;
+        }
+
+        public Builder setLong(String dLong) {
+            this.dLong = dLong;
+            return this;
+        }
+
+        public Builder setFirst(String dFirst) {
+            this.dFirst = dFirst;
+            return this;
+        }
+
+        public Builder setMethod(EntityDescribeMethod dMethod) {
+            this.dMethod = dMethod;
+            return this;
+        }
+
+        public Builder setNames(List<Word> names) {
+            this.names = names;
+            return this;
+        }
+
+        public Builder setAdjectives(List<Word> adjectives) {
+            this.adjectives = adjectives;
+            return this;
+        }
     }
 
     public Description setShort(String dShort) {
@@ -70,6 +107,9 @@ public class Description {
     }
 
     public Description addAdjectives(Word... adjectives) {
+        if(this.adjectives == null) {
+            this.adjectives = new ArrayList<Word>();
+        }
         for(Word w : adjectives) {
             if(!this.adjectives.contains(w)) {
                 this.adjectives.add(w);
@@ -83,6 +123,9 @@ public class Description {
     }
 
     public boolean hasAdjectives(Word... adjectives) {
+        if(this.adjectives == null) {
+            return false;
+        }
         for(Word w : adjectives) {
             if(!this.adjectives.contains(w)) {
                 return false;

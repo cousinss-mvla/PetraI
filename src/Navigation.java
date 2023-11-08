@@ -1,18 +1,24 @@
 import java.util.EnumMap;
-import java.util.concurrent.Callable;
+import java.util.function.Function;
+
 /**
  * Much like {@link Description}, the Navigator is a data-child for an Entity's (almost always a Room's) locational "neighbors" -
  * other Rooms which can be accessed as the Adventurer moves.
  */
 public class Navigation {
-    private EnumMap<Direction, Callable<Entity>> map;
+    private final Global G;
+    private EnumMap<Direction, Function<Global, Entity>> map;
 
-    public Navigation() {
-        this.map = new EnumMap<Direction, Callable<Entity>>(Direction.class);
+    public Navigation(Global G) {
+        this.G = G;
+        this.map = new EnumMap<Direction, Function<Global, Entity>>(Direction.class);
     }
 
-    public void put(Direction direction, Callable<Entity> method) {
-        this.map.put(direction, method);
+    public Navigation put(Function<Global, Entity> method, Direction... direction) {
+        for(Direction d : direction) {
+            this.map.put(d, method);
+        }
+        return this;
     }
 
     /**
@@ -21,14 +27,14 @@ public class Navigation {
      * @return one of the following:
      * The new ROOM Entity if the Adventurer can move that way (UEXIT or CEXIT pass)
      * {@code null} if the Adventurer cannot move that way and the caller should handle the print-message ("you cannot go that way"). (EXIT absent)
-     * or the Adventurer's current room if the Adventurer cannot move that way, but the print-message has already been handled. (FEXIT general, NEXIT, CEXIT fail)
+     * or the caller room Entity if the Adventurer cannot move that way, but the print-message has already been handled. (FEXIT general, NEXIT, CEXIT fail)
      */
     public Entity move(Direction direction) {
         if(!map.containsKey(direction)) {
             return null;
         }
         try {
-            return map.get(direction).call();
+            return map.get(direction).apply(G);
         } catch (Exception e) {
             return null;
         }
