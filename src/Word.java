@@ -29,9 +29,35 @@ public enum Word {
     SILVER("SILVER", "SILVERY"),
     SMALL("SMALL", "SMALLISH", "MINIATURE"),
 
+    //Prepositions
+    ON("ON", "ATOP", "ONTO"),
+    IN("IN", "INTO", "INSIDE"),
+    THROUGH("WITH", "USING", "THRU", "THROUGH", "VIA"),
+    UNDER("UNDER", "BENEATH", "BELOW", "UNDERNEATH"),
+    OFF("OFF"),
+    FROM("FROM"),
+    AROUND("AROUND"),
+    TO("TO", "TOWARDS"),
+
+    //technically not grammatically prepositions but similar Token strings
+    //?
+
+    //Directions
+    NORTH("NORTH", "NORTHWARD", "NORTHWARDS", "N"),
+    EAST("EAST", "EASTWARD", "EASTWARDS", "E"),
+    SOUTH("SOUTH", "SOUTHWARD", "SOUTHWARDS", "S"),
+    WEST("WEST", "WESTWARD", "WESTWARDS", "W"),
+    NORTHEAST("NORTHEAST", "NORTHEASTWARD", "NORTHWESTWARD", "NE"),
+    NORTHWEST("NORTHWEST", "NORTHWESTWARD", "NORTHWESTWARDS", "NW"),
+    SOUTHWEST("SOUTHWEST", "SOUTHWESTWARD", "SOUTHWESTWARDS", "SW"),
+    SOUTHEAST("SOUTHEAST", "SOUTHEASTWARD", "SOUTHEASTWARDS", "SE"),
+    OUT("OUT", "OUTSIDE"),
+    //see Word.IN in Prepositions (double-purpose) //TODO THINK is this gonna be a problem?
+    UP("UP", "U", "UPWARDS", "UPSTAIRS"),
+    DOWN("DOWN", "D", "DOWNWARDS", "DOWNSTAIRS"),
+    FORTH("FORWARD", "FORTH"),
+    BACK("BACK", "BACKWARDS", "BACKWARD")
     ;
-
-
 
     private final String[] matchString;
 

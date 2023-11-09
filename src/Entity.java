@@ -1,6 +1,5 @@
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.Function;
 
 public class Entity {
     private Global G;
@@ -12,12 +11,12 @@ public class Entity {
     private int weight;
     private int capacity;
     private List<Entity> contains;
-    private Function<Global, Boolean> function;
+    private Method method;
 
     /**
      * For builder only
      */
-    public Entity(Global g, String id, Entity parent, EFlagSet flagSet, Description description, Navigation navigation, int weight, int capacity, List<Entity> contains, Function<Global, Boolean> function) {
+    public Entity(Global g, String id, Entity parent, EFlagSet flagSet, Description description, Navigation navigation, int weight, int capacity, List<Entity> contains, Method method) {
         this.G = g;
         this.id = id;
         this.parent = parent;
@@ -27,7 +26,7 @@ public class Entity {
         this.weight = weight;
         this.capacity = capacity;
         this.contains = contains;
-        this.function = function;
+        this.method = method;
     }
 
     public static class Builder {
@@ -38,7 +37,7 @@ public class Entity {
         }
 
         public Entity build() {
-            Entity out = new Entity(G, id, parent, flagSet != null ? flagSet : new EFlagSet(), description, navigation, weight, capacity, contains == null ? new ArrayList<Entity>() : contains, function);
+            Entity out = new Entity(G, id, parent, flagSet != null ? flagSet : new EFlagSet(), description, navigation, weight, capacity, contains == null ? new ArrayList<Entity>() : contains, method);
             if(out.getParent() != null) {
                 out.parent.contains.add(out);
             }
@@ -54,7 +53,7 @@ public class Entity {
         private int weight;
         private int capacity;
         private List<Entity> contains;
-        private Function<Global, Boolean> function;
+        private Method method;
 
         public Builder setParent(Entity parent) {
             this.parent = parent;
@@ -91,8 +90,8 @@ public class Entity {
             return this;
         }
 
-        public Builder setFunction(Function<Global, Boolean> function) {
-            this.function = function;
+        public Builder setMethod(Method method) {
+            this.method = method;
             return this;
         }
     }

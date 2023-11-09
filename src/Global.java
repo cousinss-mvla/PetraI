@@ -10,6 +10,7 @@ public class Global {
     public Entity ROOMS = null;
     public Entity LOCAL_GLOBALS = null;
     public Entity VOID = null;
+    public Entity GLOBALS = null;
     public Entity WHITE_ROOM = null;
     public Entity WHITE_DOOR = null;
     public Entity WHITE_DOOR_HANDLE = null;
@@ -28,6 +29,10 @@ public class Global {
                 .build();
         VOID = new Entity.Builder(this, "VOID")
                 .setDescription(new Description.Builder().setShort("VOID").build())
+                .setFlagSet(new EFlagSet(EFlag.NDESC, EFlag.INV))
+                .build();
+        GLOBALS = new Entity.Builder(this, "GLOBALS")
+                .setDescription(new Description.Builder().setShort("GLOBALS").build())
                 .setFlagSet(new EFlagSet(EFlag.NDESC, EFlag.INV))
                 .build();
 
@@ -87,6 +92,9 @@ public class Global {
             eHash.put(e.getId(), e);
         }
         for(Entity e : VOID.getDescendantsWithSelf()) {
+            eHash.put(e.getId(), e);
+        }
+        for(Entity e : GLOBALS.getDescendantsWithSelf()) {
             eHash.put(e.getId(), e);
         }
 //        for(String s : eHash.keySet()) {
