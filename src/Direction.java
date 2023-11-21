@@ -32,7 +32,8 @@ public enum Direction {
     /**
      * see {@link Direction#FORTH}
      */
-    BACK(Word.BACK);
+    BACK(Word.BACK),
+    AROUND(Word.AROUND);
 
     private final Word word;
 

@@ -5,8 +5,19 @@ import java.util.function.Function;
 
 public class Global {
 
+
+    //gvars
+        //set by parser
+        public Direction P_DIRECTION = null;
+        public Method VERB = null;
+        public Method PRE_ACTION = null;
+        public Object DIR = null;
+        public Object IND = null;
+
+    //this thing (lmao)
     private Map<String, Entity> eHash;
 
+    //rooms
     public Entity ROOMS = null;
     public Entity LOCAL_GLOBALS = null;
     public Entity VOID = null;

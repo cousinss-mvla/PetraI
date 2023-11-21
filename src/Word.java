@@ -1,6 +1,12 @@
 public enum Word {
 
+    //verbs
+    VERB_HEADER(),
+    WALK("WALK", "GO"),
+    VERB_FOOTER(),
+
     //Nouns
+    NOUN_HEADER(),
     SWORD("SWORD"),
     DOOR("DOOR", "DOORS"),
     TRAPDOOR("TRAPDOOR", "TRAP DOOR", "TRAPDOORS", "TRAPDOORS"),
@@ -9,10 +15,12 @@ public enum Word {
     PAMPHLET("PAMPHLET", "PAMPLET", "PAMPHET", "PAMHLET"),
     PAPER("PAPER"),
     HANDLE("HANDLE"),
+    IT("IT", "THAT"), //special IT token
+    NOUN_FOOTER(),
 
 
     //Articles
-    THE("THE", "THAT", "THIS"),
+    THE("THE"),
     A("A", "AN"),
     SOME("SOME", "A COUPLE", "A FEW"),
     YOUR("YOUR"),
@@ -36,7 +44,6 @@ public enum Word {
     UNDER("UNDER", "BENEATH", "BELOW", "UNDERNEATH"),
     OFF("OFF"),
     FROM("FROM"),
-    AROUND("AROUND"),
     TO("TO", "TOWARDS"),
 
     //technically not grammatically prepositions but similar Token strings
@@ -56,7 +63,8 @@ public enum Word {
     UP("UP", "U", "UPWARDS", "UPSTAIRS"),
     DOWN("DOWN", "D", "DOWNWARDS", "DOWNSTAIRS"),
     FORTH("FORWARD", "FORTH"),
-    BACK("BACK", "BACKWARDS", "BACKWARD")
+    BACK("BACK", "BACKWARDS", "BACKWARD"),
+    AROUND("AROUND"),
     ;
 
     private final String[] matchString;
@@ -81,6 +89,14 @@ public enum Word {
             }
         }
         return false;
+    }
+
+    public boolean isVerb() {
+        return this.ordinal() > Word.VERB_HEADER.ordinal() && this.ordinal() < Word.VERB_FOOTER.ordinal();
+    }
+
+    public boolean isNoun() {
+        return this.ordinal() > Word.NOUN_HEADER.ordinal() && this.ordinal() < Word.NOUN_FOOTER.ordinal();
     }
 
 }
