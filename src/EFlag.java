@@ -23,6 +23,9 @@ public enum EFlag {
     BVOW,
     ON,
     LIT,
+    /**
+     * Integral: Marked as cannot be removed from parent
+     */
     INT,
     /**
      * Directionless: Use for rooms where directions NESW, etc. should be rejected ("you don't know which way is "north")

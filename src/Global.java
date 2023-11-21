@@ -14,6 +14,8 @@ public class Global {
         public Object DIR = null;
         public Object IND = null;
 
+    public boolean VERBOSE = false;
+
     //this thing (lmao)
     private Map<String, Entity> eHash;
 
@@ -22,6 +24,8 @@ public class Global {
     public Entity LOCAL_GLOBALS = null;
     public Entity VOID = null;
     public Entity GLOBALS = null;
+    //The player character Entity.
+    public Entity HERO = null;
     public Entity WHITE_ROOM = null;
     public Entity WHITE_DOOR = null;
     public Entity WHITE_DOOR_HANDLE = null;
@@ -93,6 +97,16 @@ public class Global {
                 .putLocalGlobals(List.of(WHITE_DOOR))
                 .build();
 
+        HERO = new Entity.Builder(this, "HERO")
+                .setParent(WHITE_ROOM)
+                .setDescription(new Description.Builder()
+                        .setShort("you")
+                        .build())
+                .setFlagSet(new EFlagSet(EFlag.CHARACTER, EFlag.CONT, EFlag.NART, EFlag.INV, EFlag.TOUCH, EFlag.NDESC, EFlag.OPEN))
+//                .putLocalGlobals(List.of()/*TODO hands, fists, all body parts*/)
+                .setCapacity(10)
+                .build();
+
 
         populateHash();
     }
@@ -122,7 +136,7 @@ public class Global {
             Entity d = e(door);
             Entity f = e(from);
             Entity t = e(to);
-            System.out.println("Can move from \n" + f + "\nto\n" + t + "\nthrough\n" + d + "\n?");
+//            System.out.println("Can move from \n" + f + "\nto\n" + t + "\nthrough\n" + d + "\n?");
             if(!d.has(EFlag.OPEN)) {
                 System.out.println("The " + d.describe().getShort() + " is closed.");
             }

@@ -37,7 +37,7 @@ public class Entity {
         }
 
         public Entity build() {
-            Entity out = new Entity(G, id, parent, flagSet != null ? flagSet : new EFlagSet(), description, navigation, weight, capacity, contains == null ? new ArrayList<Entity>() : contains, method);
+            Entity out = new Entity(G, id, parent, flagSet != null ? flagSet : new EFlagSet(), description, navigation, weight, capacity, contains == null ? new ArrayList<>() : contains, method);
             if(out.getParent() != null) {
                 out.parent.contains.add(out);
             }
@@ -86,7 +86,7 @@ public class Entity {
         }
 
         public Builder putLocalGlobals(List<Entity> contains) {
-            this.contains = contains;
+            this.contains = new ArrayList<>(contains);
             return this;
         }
 
@@ -133,6 +133,20 @@ public class Entity {
         }
         this.contains.add(e);
         return true;
+    }
+
+    protected boolean move(Entity to) {
+        if(null == to) {
+            return false;
+        }
+        this.getParent().removeChild(this);
+        this.parent = to;
+        this.parent.addChild(this);
+        return true;
+    }
+
+    protected boolean removeChild(Entity child) {
+        return this.contains.remove(child);
     }
 
     protected Navigation getNavigation() {

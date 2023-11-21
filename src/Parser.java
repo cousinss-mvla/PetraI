@@ -17,7 +17,7 @@ public class Parser {
             if(words.length == 1) {
                 Direction dir = Direction.ofWord(words[0]);
                 if(dir != null) {
-                    g.VERB = Verb.WALK;
+                    g.VERB = Verb.WALK_DIRECTION;
                     g.P_DIRECTION = dir; //reskin "east" as "walk east" and carry on to execution sequence - this won't be weird because "walk <dir> will never parser-error
                     return false;
                 }
