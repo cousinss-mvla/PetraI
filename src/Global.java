@@ -1,6 +1,7 @@
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.BiFunction;
 import java.util.function.Function;
 
 public class Global {
@@ -11,9 +12,12 @@ public class Global {
         public Direction P_DIRECTION = null;
         public Method VERB = null;
         public Method PRE_ACTION = null;
-        public Object DIR = null;
-        public Object IND = null;
+        public Entity DIR = null;
+        public Entity IND = null;
 
+    public boolean TURN_OVER = false;
+    public RContextFlag R_FLAG;
+    public boolean GAME_OVER = false;
     public boolean VERBOSE = false;
 
     //this thing (lmao)
@@ -26,13 +30,17 @@ public class Global {
     public Entity GLOBALS = null;
     //The player character Entity.
     public Entity HERO = null;
+    public Entity PLAYER_BODY = null; //TODO init
     public Entity WHITE_ROOM = null;
     public Entity WHITE_DOOR = null;
     public Entity WHITE_DOOR_HANDLE = null;
     public Entity BLACK_ROOM = null;
 
+    public final Clock CLOCK;
 
     public Global() {
+
+        CLOCK = new Clock();
 
         ROOMS = new Entity.Builder(this, "ROOMS")
                 .setDescription(new Description.Builder().setShort("ROOMS").build())
@@ -81,7 +89,7 @@ public class Global {
                         .build())
                 .setFlagSet(new EFlagSet(EFlag.LIT, EFlag.NDIR))
                 .setNavigation(new Navigation(this)
-                        .put(getDoorNavFunc("WHITE_DOOR", "WHITE_ROOM", "BLACK_ROOM"), Direction.OUT, Direction.IN))
+                        .func(getDoorNavFunc("WHITE_DOOR", "BLACK_ROOM"), Direction.OUT, Direction.IN))
                 .putLocalGlobals(List.of(WHITE_DOOR))
                 .build();
 
@@ -93,14 +101,22 @@ public class Global {
                         .build())
                 .setFlagSet(new EFlagSet(EFlag.LIT, EFlag.NDIR))
                 .setNavigation(new Navigation(this)
-                        .put(getDoorNavFunc("WHITE_DOOR", "BLACK_ROOM", "WHITE_ROOM"), Direction.OUT, Direction.IN))
+                        .func(getDoorNavFunc("WHITE_DOOR", "WHITE_ROOM"), Direction.OUT, Direction.IN)
+                        )
                 .putLocalGlobals(List.of(WHITE_DOOR))
+                .setMethod(g -> {
+                    if(g.R_FLAG == RContextFlag.ROOM_PRETURN && !g.BLACK_ROOM.has(EFlag.TOUCH)) {
+                        System.out.println("A shivering wail echoes through the room from an unseen source. You are stunned and cannot move.");
+                        return true;
+                    }
+                    return false;
+                })
                 .build();
 
         HERO = new Entity.Builder(this, "HERO")
                 .setParent(WHITE_ROOM)
                 .setDescription(new Description.Builder()
-                        .setShort("you")
+                        .setShort("yourself")
                         .build())
                 .setFlagSet(new EFlagSet(EFlag.CHARACTER, EFlag.CONT, EFlag.NART, EFlag.INV, EFlag.TOUCH, EFlag.NDESC, EFlag.OPEN))
 //                .putLocalGlobals(List.of()/*TODO hands, fists, all body parts*/)
@@ -109,6 +125,7 @@ public class Global {
 
 
         populateHash();
+        updateLatter();
     }
 
     private void populateHash() {
@@ -127,25 +144,39 @@ public class Global {
 //        }
     }
 
+    //populate everything that couldn't be populated during initialization (because it was inline with declaration)
+    private void updateLatter() {
+        for(Entity e : eHash.values()) {
+            e.describe().setOwner(e);
+        }
+    }
+
     private Entity e(String id) {
         return eHash.get(id);
     }
 
-    private Function<Global, Entity> getDoorNavFunc(String door, String from, String to) {
-        return g -> {
+    private BiFunction<Global, Entity, Entity> getDoorNavFunc(String door, String to) {
+        return (g, f) -> {
             Entity d = e(door);
-            Entity f = e(from);
             Entity t = e(to);
 //            System.out.println("Can move from \n" + f + "\nto\n" + t + "\nthrough\n" + d + "\n?");
             if(!d.has(EFlag.OPEN)) {
                 System.out.println("The " + d.describe().getShort() + " is closed.");
             }
-            return d.has(EFlag.OPEN) ? t : null;
+            return d.has(EFlag.OPEN) ? t : f;
         };
     }
 
     private Function<Global, Entity> sAcc(Entity e) {
         return g -> e;
+    }
+
+    public Entity room() {
+        Entity parent = this.HERO.getParent();
+        while(!parent.in(this.ROOMS)) {
+            parent = parent.getParent();
+        }
+        return parent;
     }
 
 }

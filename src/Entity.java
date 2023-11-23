@@ -96,7 +96,12 @@ public class Entity {
         }
     }
 
-
+    public boolean methodNotNull(Global g) {
+        if(this.getMethod() != null) {
+            return this.getMethod().apply(g);
+        }
+        return false;
+    }
 
     public List<Entity> getAncestry() {
         List<Entity> out = new ArrayList<>();
@@ -147,6 +152,10 @@ public class Entity {
 
     protected boolean removeChild(Entity child) {
         return this.contains.remove(child);
+    }
+
+    public Method getMethod() {
+        return this.method;
     }
 
     protected Navigation getNavigation() {

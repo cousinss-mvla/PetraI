@@ -1,10 +1,12 @@
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Function;
 
 /**
  * Description data-holding class for an Entity's short, long, first, and method descriptors. These descriptors do NOT reference or necessitate {@link Word}s, but are used for player-facing text output only.
  */
 public class Description {
+    private Entity owner;
     //The Entity's "name" or phrasal descriptor. Rooms should follow Upper Case and objects, unless special, should follow lower case.
     //example: "sword", "Great Hall"
     private String dShort;
@@ -132,6 +134,30 @@ public class Description {
             }
         }
         return true;
+    }
+
+    public String the() {
+        return (!owner.has(EFlag.NART) ? "the " : "") + this.getShort();
+    }
+
+    public String The() {
+        return (!owner.has(EFlag.NART) ? "The " : "") + this.getShort();
+    }
+
+    public String theLowerCase() {
+        return (!owner.has(EFlag.NART) ? "the " : "") + (owner.has(EFlag.NUNC) ? this.getShort() : this.getShort().toLowerCase());
+    }
+
+    public String a() {
+        return (!owner.has(EFlag.NART) ? (!owner.has(EFlag.BVOW) ? "a " : "an ") : "") + this.getShort();
+    }
+
+    public String A() {
+        return (!owner.has(EFlag.NART) ? (!owner.has(EFlag.BVOW) ? "A " : "An ") : "") + this.getShort();
+    }
+
+    public void setOwner(Entity e) {
+        this.owner = e;
     }
 
     public String getShort() {
