@@ -68,7 +68,7 @@ public class Global {
                         .setFirst("Inscribed in one wall, just barely visible, is the outline of a door, cut into the wall surface, with a small silver handle.")
                         .setLong("There is a white door cut out of the wall surface here.")
                         .build())
-                .setFlagSet(new EFlagSet(EFlag.DOOR))
+                .setFlagSet(new EFlagSet(EFlag.DOOR, EFlag.OPEN))
                 .build();
 
         WHITE_DOOR_HANDLE = new Entity.Builder(this, "WHITE_DOOR_HANDLE")
@@ -98,19 +98,16 @@ public class Global {
                 .setDescription(new Description.Builder()
                         .setShort("Black Room")
                         .setLong("You are in a strange black room, lit by an unknown source. Its novelty excites you.")
+                        .setMethod(g -> {
+                            System.out.println("You enter a strange black room.\nA shivering wail echoes through the room from an unseen source.");
+                            return true;
+                        })
                         .build())
                 .setFlagSet(new EFlagSet(EFlag.LIT, EFlag.NDIR))
                 .setNavigation(new Navigation(this)
                         .func(getDoorNavFunc("WHITE_DOOR", "WHITE_ROOM"), Direction.OUT, Direction.IN)
                         )
                 .putLocalGlobals(List.of(WHITE_DOOR))
-                .setMethod(g -> {
-                    if(g.R_FLAG == RContextFlag.ROOM_PRETURN && !g.BLACK_ROOM.has(EFlag.TOUCH)) {
-                        System.out.println("A shivering wail echoes through the room from an unseen source. You are stunned and cannot move.");
-                        return true;
-                    }
-                    return false;
-                })
                 .build();
 
         HERO = new Entity.Builder(this, "HERO")

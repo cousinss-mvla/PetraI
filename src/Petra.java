@@ -1,13 +1,10 @@
 public class Petra {
-    protected static final String VERSION = "1.0a01b";
+    protected static final String VERSION = "1.0a02b";
 
     private final Global g;
 
     public Petra(Global g) {
         this.g = g;
-
-        //TODO testing
-        g.WHITE_DOOR.getFlags().set(EFlag.OPEN);
     }
 
     public void start() {
@@ -25,13 +22,14 @@ public class Petra {
         System.out.println(" > " + input);
 
         preclearPGlobals();
-        //false parse TODO
-        g.VERB = Verb.WALK_DIRECTION;
-        g.P_DIRECTION = Direction.IN;
-        //false parse
-//        if(Parser.parse(g, input)) {
+
+//        if (Parser.parse(g, input)) {
 //            return false; //loop over, parser handled
 //        }
+
+        g.VERB = Verb.WALK_DIRECTION;//false parse TODO
+        g.P_DIRECTION = Direction.IN;//false parse TODO
+
         runTurn(false);
 
         System.out.println();
@@ -43,7 +41,7 @@ public class Petra {
         if (null != g.HERO.getMethod() && g.HERO.getMethod().apply(g)) {
             System.out.println("Handled by HERO method");
         } else if (null != g.room().getMethod() && g.room().getMethod().apply(g)) {
-            System.out.println("Handled by ROOM PRETURN by " + g.room().describe().getShort());
+//            System.out.println("Handled by ROOM PRETURN by " + g.room().describe().getShort());
         } else if (null != g.PRE_ACTION && g.PRE_ACTION.apply(g)) {
             System.out.println("Handled by VERB PREACTION");
         } else if (null != g.IND && null != g.IND.getMethod() && g.IND.getMethod().apply(g)) {
@@ -52,7 +50,7 @@ public class Petra {
             System.out.println("Handled by DIR by " + g.DIR.describe().getShort());
         } else {
             if(g.VERB.apply(g)) {
-                System.out.println("Handled by VERB");
+//                System.out.println("Handled by VERB");
                 noTime = true; //some verbs take no time - should be accounted for later
             }
         }

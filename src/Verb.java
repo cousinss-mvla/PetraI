@@ -5,7 +5,7 @@ public class Verb {
     public static final Method WALK_DIRECTION = g -> {
         I_goTo(g.HERO.getParent().getNavigation().move(g.P_DIRECTION, g.HERO.getParent()), g);
         return true;
-    }; //TODO replace this is sample code
+    }; //TODO this probably needs to be more complicated?
 
     public static final Method VERSION = g -> {
         System.out.println("\"Petra - Reloaded\" by Samuel Cousins");
@@ -39,9 +39,7 @@ public class Verb {
         g.HERO.move(to);
         g.R_FLAG = RContextFlag.ROOM_ENTER;
         g.room().methodNotNull(g);
-        Describer.describeRoom(g);
-        Describer.describeObjects(g);
-        g.room().getFlags().set(EFlag.TOUCH);
+        LOOK.apply(g);
     }
 
     //

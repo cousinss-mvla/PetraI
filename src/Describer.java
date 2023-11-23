@@ -2,11 +2,9 @@ public class Describer {
     public static void describeRoom(Global g) {
         Entity r = g.room();
         Description d = r.describe();
-        g.R_FLAG = RContextFlag.ROOM_LOOK;
-        if(r.methodNotNull(g)) {
-            return;
-        } //past this point, normal behavior (not handled by method)
-        if (!r.has(EFlag.TOUCH) && null != d.getFirst()) {
+        if(d.getMethod() != null && d.getMethod().apply(g)) {
+            //already printed
+        } else if (!r.has(EFlag.TOUCH) && null != d.getFirst()) {
             System.out.println(d.getFirst());
         } else if(null != d.getLong()) {
             System.out.println(d.getLong());

@@ -33,10 +33,11 @@ public class Description {
     private List<Word> names;
     private List<Word> adjectives;
 
-    //The Entity's method descriptor. See {@link EntityDescribeMethod}. Can be null if no object descriptor is provided (for Rooms, this means the object must have a dLong).
-    private EntityDescribeMethod dMethod;
+    //The Entity's method descriptor. Can be null if no object descriptor is provided (for Rooms, this means the object must have a dLong). Return false if not describing (to pass description to dLong).
+    //should have actual functionality (read: string-building based on g-state), don't use with (g -> sout("String..."); return true;) - just use dLong in that case
+    private Method dMethod;
 
-    private Description(String dShort, String dLong, String dFirst, EntityDescribeMethod dMethod, List<Word> names, List<Word> adjectives) {
+    private Description(String dShort, String dLong, String dFirst, Method dMethod, List<Word> names, List<Word> adjectives) {
         this.dShort = dShort;
         this.dLong = dLong;
         this.dFirst = dFirst;
@@ -53,7 +54,7 @@ public class Description {
         private String dShort;
         private String dLong;
         private String dFirst;
-        private EntityDescribeMethod dMethod;
+        private Method dMethod;
         private List<Word> names;
         private List<Word> adjectives;
 
@@ -72,7 +73,7 @@ public class Description {
             return this;
         }
 
-        public Builder setMethod(EntityDescribeMethod dMethod) {
+        public Builder setMethod(Method dMethod) {
             this.dMethod = dMethod;
             return this;
         }
@@ -103,7 +104,7 @@ public class Description {
         return this;
     }
 
-    public Description setMethod(EntityDescribeMethod dMethod) {
+    public Description setMethod(Method dMethod) {
         this.dMethod = dMethod;
         return this;
     }
@@ -172,7 +173,7 @@ public class Description {
         return this.dFirst;
     }
 
-    public EntityDescribeMethod getMethod() {
+    public Method getMethod() {
         return this.dMethod;
     }
 }
