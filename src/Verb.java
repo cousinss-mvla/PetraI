@@ -34,6 +34,13 @@ public class Verb {
         return true;
     };
 
+    public static final Method LOOK_DIRECTION = g -> { //preaction alias to <LOOK or WALK_DIR>
+        g.VERB = g.P_DIRECTION.equals(Direction.AROUND) ? LOOK : WALK_DIRECTION;
+        g.PRE_ACTION = null;
+        g.GAME.runTurn();
+        return true;
+    };
+
     protected static void I_goTo(Entity to, Global g) {
         g.HERO.move(to);
         g.R_FLAG = RContextFlag.ROOM_ENTER;
@@ -43,7 +50,9 @@ public class Verb {
 
     protected static final Action[] ACTIONS = new Action[] {
             new Action(WALK_DIRECTION, new Token(Word.WALK), new Token(Token.TokenType.DIR, Token.ETokenFlag.DIRECTION)),
+            new Action(null, LOOK_DIRECTION, new Token(Word.WALK), new Token(Token.TokenType.DIR, Token.ETokenFlag.DIRECTION)), //alias method (either to LOOK or WALK_DIR)
             new Action(WALK_DIRECTION, new Token(Token.TokenType.DIR, Token.ETokenFlag.DIRECTION)),
+            new Action(LOOK, new Token(Word.LOOK)),
     };
     //actions will not need to be generally accessible (except to the parser) or named - they will point to a method (A_WALK), which is of note to other classes.
     //many actions a, a1, a2, a3 may have the same METHOD, such as "walk to DIR"

@@ -3,6 +3,15 @@ public enum Word {
     //verbs
     VERB_HEADER(),
     WALK("WALK", "GO"),
+    EAT("EAT", "MUNCH", "TASTE", "CONSUME"),
+    TAKE("TAKE", "GRAB", "STEAL"),
+    DRINK("DRINK"),
+    PUT("PUT", "PLACE"),
+    DROP("DROP", "THROW", "DISCARD"),
+    ATTACK("ATTACK", "KILL", "STAB", "MURDER", "BEAT", "ASSAULT", "DESTROY"),
+    EXAMINE("EXAMINE", "INSPECT", "STUDY", "INVESTIGATE"),
+    LOOK("LOOK", "GAZE", "L"),
+
     VERB_FOOTER(),
 
     //Nouns

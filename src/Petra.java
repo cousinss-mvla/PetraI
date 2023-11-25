@@ -8,6 +8,7 @@ public class Petra {
 
     public Petra(Global g, Scanner scanner) {
         this.g = g;
+        g.setGame(this);
         this.scanner = scanner;
     }
 
@@ -30,8 +31,8 @@ public class Petra {
             return false; //loop over, parser handled
         }
 
-//        g.VERB = Verb.WALK_DIRECTION;//false parse TODO
-//        g.P_DIRECTION = Direction.IN;//false parse TODO
+//        g.PRE_ACTION = Verb.LOOK_DIRECTION;//false parse TODO
+//        g.P_DIRECTION = Direction.AROUND;//false parse TODO
 
         runTurn(false);
 

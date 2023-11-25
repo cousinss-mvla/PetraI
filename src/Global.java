@@ -37,6 +37,7 @@ public class Global {
     public Entity BLACK_ROOM = null;
 
     public final Clock CLOCK;
+    public Petra GAME;
 
     public Global() {
 
@@ -162,6 +163,10 @@ public class Global {
             }
             return d.has(EFlag.OPEN) ? t : f;
         };
+    }
+
+    protected void setGame(Petra game) {
+        this.GAME = game;
     }
 
     private Function<Global, Entity> sAcc(Entity e) {
