@@ -1,15 +1,20 @@
+import java.util.Scanner;
+
 public class Petra {
     protected static final String VERSION = "1.0a02b";
 
     private final Global g;
+    private final Scanner scanner;
 
-    public Petra(Global g) {
+    public Petra(Global g, Scanner scanner) {
         this.g = g;
+        this.scanner = scanner;
     }
 
     public void start() {
         Verb.VERSION.apply(g);
         Verb.LOOK.apply(g);
+        System.out.println();
     }
 
     /**
@@ -19,16 +24,14 @@ public class Petra {
     public boolean loop() {
         String input = input();
 
-        System.out.println(" > " + input);
-
         preclearPGlobals();
 
-//        if (Parser.parse(g, input)) {
-//            return false; //loop over, parser handled
-//        }
+        if (Parser.parse(g, input)) {
+            return false; //loop over, parser handled
+        }
 
-        g.VERB = Verb.WALK_DIRECTION;//false parse TODO
-        g.P_DIRECTION = Direction.IN;//false parse TODO
+//        g.VERB = Verb.WALK_DIRECTION;//false parse TODO
+//        g.P_DIRECTION = Direction.IN;//false parse TODO
 
         runTurn(false);
 
@@ -92,6 +95,8 @@ public class Petra {
     }
 
     private String input() {
-        return "go in"; //TODO
+        System.out.print(" > ");
+        String in = scanner.nextLine();
+        return in;
     }
 }

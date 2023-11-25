@@ -1,9 +1,11 @@
+import java.util.Scanner;
+
 public class Main {
     public static void main(String[] args) {
-        Petra game = new Petra(new Global());
+        Scanner scanner = new Scanner(System.in);
+        Petra game = new Petra(new Global(), scanner);
         game.start();
-        for(int i = 0 ; i < 5; i++) {
-            game.loop();
-        }
+        while(!game.loop()) {}
+        scanner.close();
     }
 }

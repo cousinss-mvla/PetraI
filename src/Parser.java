@@ -1,3 +1,5 @@
+import java.util.Arrays;
+
 public class Parser {
 
     //returns true if the full execution of this command has been handled, and false if not and the general execution sequence should run.
@@ -7,9 +9,10 @@ public class Parser {
         try {
             words = toWordList(str);
         } catch (NotAWordException e) {
-            System.out.println("ERR: \"" + e.getFatalString() + "\" is not a WORD!"); //TODO
+            System.out.println("ERR: \"" + e.getFatalString() + "\" is not a Word!\n"); //TODO
             return true;
         }
+        System.out.println(Arrays.toString(words));
         ActionMatch match;
         try {
             match = actionMatch(words);
@@ -22,10 +25,14 @@ public class Parser {
                     return false;
                 }
             }
-            System.out.println("ERR: No Verb"); //TODO
+            System.out.println("ERR: No Verb\n"); //TODO
             return true;
         } catch (SpeakUpException e) {
-            System.out.println("ERR: Speak Up!"); //TODO
+            System.out.println("ERR: Speak Up!\n"); //TODO
+            return true;
+        }
+        if(null == match) {
+            System.out.println("ERR: No Action Match.\n"); //TODO
             return true;
         }
         g.VERB = match.action.getMethod();
@@ -39,14 +46,23 @@ public class Parser {
                 g.P_DIRECTION = deo.getDirection();
                 return false;
             }
-            System.out.println("ERR: Supplied Direction in place of Noun"); //TODO - zork says "You used the word "<dir>" in a way I don't understand."
+            System.out.println("ERR: Supplied Direction in place of Noun\n"); //TODO - zork says "You used the word "<dir>" in a way I don't understand."
             return true;
         }
         return false;
     }
 
     private static Word[] toWordList(String str) throws NotAWordException {
-        return null; //TODO placeholder
+        return ((Arrays.stream(str.split("\s+")).map(Parser::findWord)).toList()).toArray(new Word[0]);
+    }
+
+    private static Word findWord(String s) throws NotAWordException {
+        for (Word w : Word.values()) {
+            if (w.matches(s)) {
+                return w;
+            }
+        }
+        throw new NotAWordException(s);
     }
 
     private static ActionMatch actionMatch(Word[] words) throws NoVerbException, SpeakUpException {
@@ -63,7 +79,13 @@ public class Parser {
         if(!hasVerb) {
             throw new NoVerbException();
         }
-        return new ActionMatch(Verb.actions[1], new Word[] {Word.OUT}, new Word[] {}); //TODO placeholder
+        for(Action a : Verb.ACTIONS) {
+            ActionMatch match = ActionMatch.match(a, words);
+            if(null != match) {
+                return match;
+            }
+        }
+        return null;
     }
 
     private static Entity parseObject(Global g, Word[] phrase, Token token, boolean dir) throws DirectionalObjectException {
@@ -77,7 +99,12 @@ public class Parser {
         return g.WHITE_DOOR_HANDLE; //TODO placeholder
     }
 
-    private record ActionMatch(Action action, Word[] dir, Word[] ind) {}
+    private record ActionMatch(Action action, Word[] dir, Word[] ind) {
+        static ActionMatch match(Action action, Word[] input) {
+            //TODO
+            return null;
+        }
+    }
 
     private static class NotAWordException extends ParseException {
         private final String fatalString;
@@ -118,7 +145,7 @@ public class Parser {
     private static class NoVerbException extends ParseException {}
     private static class SpeakUpException extends ParseException {};
 
-    private static class ParseException extends Exception {
+    private static class ParseException extends RuntimeException {
         public ParseException() {
             super();
         }

@@ -30,7 +30,6 @@ public class Verb {
         System.out.println(g.room().describe().getShort());
         Describer.describeRoom(g);
         Describer.describeObjects(g);
-        System.out.println();
         g.room().getFlags().set(EFlag.TOUCH);
         return true;
     };
@@ -42,8 +41,7 @@ public class Verb {
         LOOK.apply(g);
     }
 
-    //
-    static final Action[] actions = new Action[] {
+    protected static final Action[] ACTIONS = new Action[] {
             new Action(WALK_DIRECTION, new Token(Word.WALK), new Token(Token.TokenType.DIR, Token.ETokenFlag.DIRECTION)),
             new Action(WALK_DIRECTION, new Token(Token.TokenType.DIR, Token.ETokenFlag.DIRECTION)),
     };
