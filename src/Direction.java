@@ -53,4 +53,13 @@ public enum Direction {
         }
         return null;
     }
+
+    public boolean any(Direction... directions) {
+        for(Direction direction : directions) {
+            if(direction.equals(this)) {
+                return true;
+            }
+        }
+        return false;
+    }
 }

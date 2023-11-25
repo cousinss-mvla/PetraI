@@ -11,7 +11,9 @@ public enum Word {
     ATTACK("ATTACK", "KILL", "STAB", "MURDER", "BEAT", "ASSAULT", "DESTROY"),
     EXAMINE("EXAMINE", "INSPECT", "STUDY", "INVESTIGATE"),
     LOOK("LOOK", "GAZE", "L"),
-
+    QUIT("QUIT"),
+    LEAVE("LEAVE", "EXIT", "ESCAPE", "FLEE"),
+    VERSION("VERSION", "CREDITS"),
     VERB_FOOTER(),
 
     //Nouns

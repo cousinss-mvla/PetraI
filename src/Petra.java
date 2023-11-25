@@ -1,7 +1,7 @@
 import java.util.Scanner;
 
 public class Petra {
-    protected static final String VERSION = "1.0a02b";
+    protected static final String VERSION = "1.0a03b";
 
     private final Global g;
     private final Scanner scanner;
@@ -53,7 +53,7 @@ public class Petra {
         } else if(null != g.DIR && null != g.DIR.getMethod() && g.DIR.getMethod().apply(g)) {
             System.out.println("Handled by DIR by " + g.DIR.describe().getShort());
         } else {
-            if(g.VERB.apply(g)) {
+            if(!g.VERB.apply(g)) {
 //                System.out.println("Handled by VERB");
                 noTime = true; //some verbs take no time - should be accounted for later
             }
